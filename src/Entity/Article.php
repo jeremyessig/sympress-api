@@ -30,36 +30,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 // #[Post(security: "is_granted('ROLE_ADMIN')")]
 // #[Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user")]
 
-#[ApiResource(
-    uriTemplate: '/posts',
-    operations: [
-        new GetCollection(provider: ArticleProvider::class, name: 'get_posts'),
-        new Post(processor: ArticleProcessor::class, name: 'post_post')
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/posts/{id}',
-    operations: [
-        new Get(provider: ArticleProvider::class, name: 'get_post'),
-        new Put(processor: ArticleProcessor::class, name: 'put_post'),
-        new Delete(name: 'delete_post')
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/pages',
-    operations: [
-        new GetCollection(provider: ArticleProvider::class, name: 'get_pages'),
-        new Post(processor: ArticleProcessor::class, name: 'post_page')
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/pages/{id}',
-    operations: [
-        new Get(provider: ArticleProvider::class, name: 'get_page'),
-        new Put(processor: ArticleProcessor::class, name: 'put_page'),
-        new Delete(name: 'delete_page')
-    ]
-)]
+
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {

@@ -5,21 +5,27 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
+    #[Groups(['article:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['article:read'])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+
+    #[Groups(['article:read'])]
     #[ORM\ManyToOne(inversedBy: 'comments')]
     private ?User $author = null;
 
+    #[Groups(['article:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
