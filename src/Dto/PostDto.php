@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     operations: [
         new Get(provider: PostStateProvider::class, normalizationContext: ['groups' => ['article:read']]),
         new Put(processor: PostStateProcessor::class, denormalizationContext: ['groups' => ['article:write']]),
-        new Delete()
+        new Delete(processor: PostStateProcessor::class, provider: PostStateProvider::class)
     ]
 )]
 class PostDto extends AbstractArticleDto
