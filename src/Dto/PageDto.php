@@ -23,7 +23,7 @@ use App\State\PageStateProcessor;
     operations: [
         new Get(provider: PageStateProvider::class, normalizationContext: ['groups' => ['article:read']]),
         new Put(processor: PageStateProcessor::class, denormalizationContext: ['groups' => ['article:write']]),
-        new Delete()
+        new Delete(processor: PageStateProcessor::class, provider: PageStateProvider::class)
     ]
 )]
 class PageDto extends AbstractArticleDto {}

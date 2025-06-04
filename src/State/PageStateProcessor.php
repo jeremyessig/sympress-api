@@ -2,18 +2,28 @@
 
 namespace App\State;
 
+use ApiPlatform\Metadata\DeleteOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Article;
 use App\Dto\PageDto;
+use App\Service\DeleteArticleService;
 
 class PageStateProcessor implements ProcessorInterface
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(
+        private EntityManagerInterface $em,
+        private readonly DeleteArticleService $deleteArticle
+    ) {}
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
+
+        if ($operation instanceof DeleteOperationInterface) {
+            $this->deleteArticle->delete($uriVariables, 'page');
+        }
+
         $dto = $data;
 
         if (!$dto instanceof PageDto) {
