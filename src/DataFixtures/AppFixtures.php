@@ -16,9 +16,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-        //$this->createArticles($manager);
+        $this->createArticles($manager);
         $this->createAdmin($manager);
 
         $manager->flush();
@@ -31,7 +29,6 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $article = (new Article)
                 ->setTitle($faker->sentence(random_int(4, 7)))
-                ->setContent($faker->paragraph(random_int(3, 6)))
                 ->setCreatedAt(new \DateTimeImmutable(sprintf('-%d days', 20 - $i)));
             $manager->persist($article);
         }
@@ -41,6 +38,7 @@ class AppFixtures extends Fixture
     {
         $user = (new User)
             ->setEmail('admin@test.test')
+            ->setName('admin')
             ->setRoles(['ROLE_ADMIN']);
         $user->setPassword($this->hasher->hashPassword($user, '1234'));
 

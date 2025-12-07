@@ -48,9 +48,10 @@ class Article
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+
     #[Groups(['article:read'])]
-    #[ORM\Column]
-    private array $content = [];
+    #[ORM\Column(nullable: true)]
+    private ?array $content = null;
 
     #[Groups(['article:read'])]
     #[ORM\ManyToOne(inversedBy: 'articles')]
@@ -74,6 +75,7 @@ class Article
     #[Groups(['article:read'])]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'article', orphanRemoval: true)]
     private Collection $comments;
+
 
     public function __construct()
     {
@@ -110,17 +112,6 @@ class Article
         return $this;
     }
 
-    public function getContent(): array
-    {
-        return $this->content;
-    }
-
-    public function setContent(array $content): static
-    {
-        $this->content = $content;
-
-        return $this;
-    }
 
     public function getAuthor(): ?User
     {
@@ -196,6 +187,18 @@ class Article
                 $comment->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getContent(): ?array
+    {
+        return $this->content;
+    }
+
+    public function setContent(?array $content): static
+    {
+        $this->content = $content;
 
         return $this;
     }

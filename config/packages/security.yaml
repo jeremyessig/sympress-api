@@ -19,6 +19,7 @@ security:
       pattern: ^/api/
       stateless: true
       provider: users
+      entry_point: jwt
       jwt: ~
       json_login:
         check_path: /api/auth # The name in routes.yaml is enough for mapping
@@ -26,6 +27,10 @@ security:
         password_path: password
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
+      refresh_jwt:
+        check_path: /api/token/refresh # or, you may use the `api_refresh_token` route name
+        # or if you have more than one user provider
+        # provider: user_provider_name
 
   access_control:
     - { path: ^/, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
