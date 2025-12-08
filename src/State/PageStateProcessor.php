@@ -4,21 +4,31 @@ namespace App\State;
 
 use ApiPlatform\Metadata\DeleteOperationInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\State\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Article;
 use App\Dto\PageDto;
 use App\Service\DeleteArticleService;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PageStateProcessor implements ProcessorInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private readonly DeleteArticleService $deleteArticle
+        private readonly DeleteArticleService $deleteArticle,
+        private readonly Security $security
     ) {}
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
+
+        if ($operation instanceof Post) {
+            if (!$this->security->isGranted('ROLE_ADMIN')) {
+                throw new AccessDeniedException('Only admins can create posts.');
+            }
+        }
 
         if ($operation instanceof DeleteOperationInterface) {
             $this->deleteArticle->delete($uriVariables, 'page');

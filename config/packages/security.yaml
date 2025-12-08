@@ -41,5 +41,8 @@ security:
     - { path: ^/api/auth, roles: PUBLIC_ACCESS }
     - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
 
-    # Tout le reste de l’API nécessite au moins un user authentifié
+    # GET public pour articles/posts
+    - { path: ^/api/posts, roles: PUBLIC_ACCESS, methods: [GET] }
+
+    # Tout le reste nécessite authentification
     - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

@@ -19,17 +19,21 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-// #[ApiResource(
-//     security: "is_granted('PUBLIC_ACCESS')",
-//     processor: ArticleStateProcessor::class,
-//     normalizationContext: ['groups' => ['article:read']]
-// )]
-// #[Get()]
-// #[Put(security: "is_granted('ROLE_ADMIN') or object.owner == user")]
-// #[GetCollection()]
-// #[Post(security: "is_granted('ROLE_ADMIN')")]
-// #[Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user")]
 
+/**
+ * L'entité Article n'est pas une APiResource car c'est les provider et processor qui gèrent les DTO et les enregistrement en BDD
+ */
+
+// #[ApiResource(
+//     operations: [
+//         new Get(security: "is_granted('PUBLIC_ACCESS')"),
+//         new GetCollection(security: "is_granted('PUBLIC_ACCESS')"),
+//         new Post(security: "is_granted('ROLE_ADMIN')"),
+//         new Put(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
+//         new Patch(security: "is_granted('ROLE_ADMIN') or object.owner == user"),
+//         new Delete(security: "is_granted('ROLE_ADMIN')")
+//     ]
+// )]
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
