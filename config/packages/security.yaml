@@ -33,8 +33,13 @@ security:
         # provider: user_provider_name
 
   access_control:
-    - { path: ^/, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
-    # - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI docs
-    # - { path: ^/contexts, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI contexts
-    # - { path: ^/auth, roles: PUBLIC_ACCESS }
-    # - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+
+    - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+    - { path: ^/docs, roles: PUBLIC_ACCESS }
+
+    # Auth et refresh accessibles à tous
+    - { path: ^/api/auth, roles: PUBLIC_ACCESS }
+    - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+
+    # Tout le reste de l’API nécessite au moins un user authentifié
+    - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
