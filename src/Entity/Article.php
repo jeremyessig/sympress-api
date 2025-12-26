@@ -38,45 +38,45 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\Column(nullable: true)]
     private ?array $content = null;
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $author = null;
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?MediaObject $thumbnail = null;
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\Column(length: 255)]
     private ?string $type = 'post';
 
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\Column(length: 255)]
     private ?string $status = 'draft';
 
     /**
      * @var Collection<int, Comment>
      */
-    #[Groups(['article:read'])]
+    // #[Groups(['article:read'])]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'article', orphanRemoval: true)]
     private Collection $comments;
 

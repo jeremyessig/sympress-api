@@ -23,7 +23,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
     uriTemplate: '/posts/{id}',
     operations: [
         new Get(provider: PostStateProvider::class, normalizationContext: ['groups' => ['article:read']]),
-        new Put(processor: PostStateProcessor::class, denormalizationContext: ['groups' => ['article:write']]),
+        new Put(
+            provider: PostStateProvider::class,
+            processor: PostStateProcessor::class,
+            denormalizationContext: ['groups' => ['article:write']]
+        ),
         new Delete(processor: PostStateProcessor::class, provider: PostStateProvider::class)
     ]
 )]

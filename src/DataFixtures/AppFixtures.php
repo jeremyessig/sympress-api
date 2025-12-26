@@ -18,6 +18,7 @@ class AppFixtures extends Fixture
     {
         $this->createArticles($manager);
         $this->createAdmin($manager);
+        $this->createUser($manager);
 
         $manager->flush();
     }
@@ -72,6 +73,18 @@ class AppFixtures extends Fixture
         $user->setPassword($this->hasher->hashPassword($user, '1234'));
 
         $manager->persist($user);
+    }
+
+    public function createUser(ObjectManager $manager): void
+    {
+        for ($i = 1; $i < 6; $i++) {
+            $user = (new User)
+                ->setEmail(sprintf('test0%d@test.test', $i))
+                ->setName(sprintf('test0%d@test.test', $i))
+                ->setRoles(['ROLE_CONTRIBUTOR']);
+            $user->setPassword($this->hasher->hashPassword($user, '1234'));
+            $manager->persist($user);
+        }
     }
 
     private function randomId($length = 10): string

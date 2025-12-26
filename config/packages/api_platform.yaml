@@ -9,4 +9,7 @@ api_platform:
         jsonld: ['application/ld+json']
         multipart: ['multipart/form-data']
     mapping:
-        paths: ['%kernel.project_dir%/src/Entity', '%kernel.project_dir%/src/Dto']
+        paths:
+            - '%kernel.project_dir%/src/Entity'
+            - '%kernel.project_dir%/src/Dto'
+            - '%kernel.project_dir%/src/ApiResource'

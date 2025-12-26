@@ -8,3 +8,6 @@ controllers:
 auth:
   path: '/api/auth'
   methods: ['POST']
+
+api_token_invalidate:
+    path: /api/token/invalidate

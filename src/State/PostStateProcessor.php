@@ -29,25 +29,34 @@ class PostStateProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-
+        // 🔹 Vérification des droits pour POST et PUT
         if ($operation instanceof Post || $operation instanceof Put) {
             if (!$this->security->isGranted('ROLE_ADMIN')) {
                 throw new AccessDeniedException('Only admins can create posts.');
             }
         }
 
-        // Gestion des DELETE personnalisés
+        // 🔹 Gestion des DELETE personnalisés
         if ($operation instanceof DeleteOperationInterface) {
             $this->deleteArticle->delete($uriVariables, 'post');
             return null;
         }
 
-        // Si ce n'est pas un DTO attendu, déléguer directement
+        // 🔹 Si ce n'est pas un DTO, déléguer directement
         if (!$data instanceof PostDto) {
             return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
         }
 
-        // Récupérer ou créer l'article
+        // 🔹 Récupérer l'entité existante ou créer une nouvelle
+        $article = $context['previous_data'] ?? null;
+        if (!$article && isset($uriVariables['id'])) {
+            $article = $this->em->getRepository(Article::class)->find($uriVariables['id']);
+        }
+        if (!$article) {
+            $article = new Article();
+        }
+
+        // Récupérer l'entité existante ou en créer une nouvelle
         $article = isset($uriVariables['id'])
             ? $this->em->getRepository(Article::class)->find($uriVariables['id']) ?? new Article()
             : new Article();
@@ -61,10 +70,13 @@ class PostStateProcessor implements ProcessorInterface
         $article->setStatus($data->status ?? 'draft');
         $article->setType('post');
 
-        // Déléguer à Api Platform pour persister et appliquer la sécurité
+        // Mettre à jour le contexte pour Doctrine
+        $context['previous_data'] = $article;
+
+        // Persister l'entité
         $article = $this->persistProcessor->process($article, $operation, $uriVariables, $context);
 
-        // Mettre à jour l'ID dans le DTO pour retour
+        // Mettre à jour le DTO pour le retour
         $data->id = $article->getId();
 
         return $data;
